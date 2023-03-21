@@ -3,38 +3,53 @@ import time #Used for timed delays
 import random
 
 snake_speed = 10
+
+#Size of the window
 window_x = 720
 window_y = 480
+
+#Defining colors that will be used later
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
 red = pygame.Color(255, 0, 0)
 green = pygame.Color(0, 255, 0)
 blue = pygame.Color(0, 0, 255)
 
-pygame.init()
-screen = pygame.display.set_mode((window_x, window_y))
-pygame.display.set_caption('Snake game')
-fps = pygame.time.Clock()
+pygame.init()   #Initializing the game window
+screen = pygame.display.set_mode((window_x, window_y))  #Creating the game window using the x and y window sizes from earlier
+pygame.display.set_caption('Snake game')                #Setting the title of the window
 
-snake_position = [100, 50]
-snake_body = [[100, 50], [90, 50], [80, 50], [70, 50]]
+fps = pygame.time.Clock()   #Defines the intended frames per second
 
+snake_position = [100, 50]  #Sets the initial position of the snake
+snake_body = [[100, 50], [90, 50], [80, 50], [70, 50]]  #Sets the positions of the nodes that make the snakes body
+
+#Sets a random fruit position within the window range and sets fruit_spawn to TRUE, meaning that a fruit is on the board
 fruit_position = [random.randrange(1, (window_x//10)) * 10, random.randrange(1, (window_y//10)) * 10]
 fruit_spawn = True
 
-direction = 'RIGHT'
-change_to = direction
+#Sets the initial direction that the snake is moving to "RIGHT"
+direction = 'RIGHT'     #direction is the current direction of the snake
 
-score = 0
+                        #change_to is used to check whether the snake can move from the current direction to the next direction
+change_to = direction   #for example, if the snake is moving up it can't immediately switch to moving down
+                        #so if direction = "UP" and change_to = "DOWN" then nothing will happen 
 
+score = 0   #Set initial score to zero
+
+#This function shows the score in the top left of the screen
 def show_score(choice, color, font, size):
     
+    #Create font
     score_font = pygame.font.SysFont(font, size)
 
-    score_surface = score_font.render('Scote : ' + str(score), True, color)
+    #Create surface variable to be passed to .blit
+    score_surface = score_font.render('Score : ' + str(score), True, color)
 
+    #Create rectangle variable to define shape of text box for the score
     score_rect = score_surface.get_rect()
 
+    #Use blit to draw the scoreboard onto the current screen
     screen.blit(score_surface, score_rect)
 
 def game_over():

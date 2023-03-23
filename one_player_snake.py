@@ -161,7 +161,7 @@ def onep_snake(game_window, window_x, window_y):
         quit_font = pygame.font.SysFont('times new roman', 15)
         quit_surface = quit_font.render('Press esc to quit', True, white)
         quit_rect = quit_surface.get_rect()
-        game_window.blit(quit_surface, (610, 465))
+        game_window.blit(quit_surface, (620, 463))
 
         # Refresh game screen
         pygame.display.update()

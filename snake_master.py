@@ -79,7 +79,7 @@ def game_over():
 
 # Main while loop of the game
 while True:
-#New branch
+
     # Changes "change_to" based on keyboard input
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:

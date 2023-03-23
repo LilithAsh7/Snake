@@ -18,4 +18,14 @@ pygame.init()  # Initializing the game window
 screen = pygame.display.set_mode((window_x, window_y))  # Creating the game window using the x and y window sizes from earlier
 pygame.display.set_caption('Snake game')  # Setting the title of the window
 
-one_player_snake.onep_snake(screen, window_x, window_y)
+def single_player():
+    one_player_snake.onep_snake(screen, window_x, window_y)
+
+def multiplayer():
+    pass
+
+menu = pygame_menu.Menu('Snek', 400, 300, theme=pygame_menu.themes.THEME_BLUE)
+menu.add.button('One player', single_player)
+menu.add.button('Two Player', pygame_menu.events.EXIT)
+menu.add.button('Quit', pygame_menu.events.EXIT)
+menu.mainloop(screen)

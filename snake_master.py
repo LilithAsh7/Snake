@@ -15,7 +15,7 @@ blue = pygame.Color(0, 0, 255)
 pink = pygame.Color(250, 147, 241)
 
 pygame.init()  # Initializing the game window
-screen = pygame.display.set_mode((window_x, window_y))  # Creating the game window using the x and y window sizes from earlier
+screen = pygame.display.set_mode((window_x, window_y), pygame.NOFRAME)  # Creating the game window using the x and y window sizes from earlier
 pygame.display.set_caption('Snake game')  # Setting the title of the window
 
 def single_player():

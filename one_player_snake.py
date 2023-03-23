@@ -81,9 +81,9 @@ def onep_snake(game_window, window_x, window_y):
                     p1_change_to = 'LEFT'
                 if event.key == pygame.K_RIGHT:
                     p1_change_to = 'RIGHT'
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
 
         # Compares change_to with direction to make sure move is valid, if it's valid it changed direction to that move
         if p1_change_to == 'UP' and p1_direction != 'DOWN':
@@ -131,10 +131,23 @@ def onep_snake(game_window, window_x, window_y):
         pygame.draw.rect(game_window, white, pygame.Rect(fruit_position[0], fruit_position[1], 10, 10))
 
         # Triggers game_over if the snake touches the walls
-        if p1_position[0] < 0 or p1_position[0] > window_x - 10:
-            game_over(game_window, window_x, window_y, p1_score)
-        if p1_position[1] < 0 or p1_position[1] > window_y - 10:
-            game_over(game_window, window_x, window_y, p1_score)
+
+        if p1_position[0] < 0:  #left
+            p1_position[0] = window_x
+
+        if p1_position[0] > window_x:   #right
+            p1_position[0] = -10
+
+        if p1_position[1] < 0:  #top
+            p1_position[1] = window_y
+
+        if p1_position[1] > window_y:   #bottom
+            p1_position[1] = -10
+
+        #if p1_position[0] < 0 or p1_position[0] > window_x - 10:
+            #game_over(game_window, window_x, window_y, p1_score)
+        #if p1_position[1] < 0 or p1_position[1] > window_y - 10:
+            #game_over(game_window, window_x, window_y, p1_score)
 
         # Triggers game_over if the snake touches its own body
         for block in p1_body[1:]:
@@ -143,6 +156,12 @@ def onep_snake(game_window, window_x, window_y):
 
         # Continuously display score
         show_score(game_window, p1_score, pink, 'times new roman', 20)
+
+        # Create surface variable to be passed to .blit
+        quit_font = pygame.font.SysFont('times new roman', 15)
+        quit_surface = quit_font.render('Press esc to quit', True, white)
+        quit_rect = quit_surface.get_rect()
+        game_window.blit(quit_surface, (610, 465))
 
         # Refresh game screen
         pygame.display.update()

@@ -2,7 +2,7 @@ import pygame
 import pygame_menu
 import one_player_snake
 import two_player_snake
-import main_menu
+import m_menu
 # Size of the window
 window_x = 720
 window_y = 480
@@ -24,5 +24,6 @@ def main_menu():
     menu.add.button('Quit', pygame_menu.events.EXIT)
     menu.mainloop(screen)
 """
-main_menu(screen)
+
+m_menu.main_menu(screen, window_x, window_y)
 

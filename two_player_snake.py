@@ -2,6 +2,7 @@ import pygame
 import time  # Used for timed delays
 import random
 import sys
+import m_menu
 
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
@@ -52,7 +53,7 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
     game_over_surface = main_font.render(message, True, winner_color)
     p1_score_surface = sub_font.render("Player 1: " + str(p1_score), True, p1_color)
     p2_score_surface = sub_font.render("Player 2: " + str(p2_score), True, p2_color)
-    inst_surface = sub2_font.render('Press esc to quit or enter to play again', True, white)
+    inst_surface = sub2_font.render('Esc for main menu or Enter to play again', True, white)
 
     game_over_rect = game_over_surface.get_rect()
 
@@ -69,8 +70,7 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
+                    m_menu.main_menu(game_window, window_x, window_y)
                 if event.key == pygame.K_RETURN:
                     twop_snake(game_window, window_x, window_y)
 

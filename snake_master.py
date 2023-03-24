@@ -17,8 +17,12 @@ def single_player():
 def multiplayer():
     two_player_snake.twop_snake(screen, window_x, window_y)
 
-menu = pygame_menu.Menu('Snek', 400, 300, theme=pygame_menu.themes.THEME_SOLARIZED)
-menu.add.button('One player', single_player)
-menu.add.button('Two Player', multiplayer)
-menu.add.button('Quit', pygame_menu.events.EXIT)
-menu.mainloop(screen)
+def main_menu():
+    menu = pygame_menu.Menu('Snek', 400, 300, theme=pygame_menu.themes.THEME_SOLARIZED)
+    menu.add.button('One player', single_player)
+    menu.add.button('Two Player', multiplayer)
+    menu.add.button('Quit', pygame_menu.events.EXIT)
+    menu.mainloop(screen)
+
+main_menu()
+

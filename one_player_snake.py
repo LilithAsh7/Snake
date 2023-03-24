@@ -40,10 +40,9 @@ def game_over(game_window, window_x, window_y, p1_score):
     game_window.blit(game_over_surface, game_over_rect)
     pygame.display.flip()
 
-    # Delays for 5 seconds and then quits the app
+    # Delays for 3 seconds and then restart the game
     time.sleep(3)
-    pygame.quit()
-    quit()
+    onep_snake(game_window, window_x, window_y)
 
 def onep_snake(game_window, window_x, window_y):
 

@@ -1,7 +1,7 @@
 import pygame
 import time  # Used for timed delays
 import random
-#import sys
+import sys
 
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
@@ -62,10 +62,9 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
     game_window.blit(p2_score_surface, (305, 215))
     pygame.display.flip()
 
-    # Delays for 2 seconds and then quits the app
+    # Delays for 3 seconds and then restarts the game
     time.sleep(3)
-    pygame.quit()
-    quit()
+    twop_snake(game_window, window_x, window_y)
 
 def twop_snake(game_window, window_x, window_y):
 
@@ -117,7 +116,8 @@ def twop_snake(game_window, window_x, window_y):
                 if event.key == pygame.K_d:
                     p2_change_to = 'RIGHT'
                 if event.key == pygame.K_ESCAPE:
-                    game_over(game_window, window_x, window_y, p1_score, p2_score, winner = "quit")
+                    pygame.quit()
+                    sys.exit()
 
         # Compares change_to with direction to make sure move is valid, if it's valid it changed direction to that move
         if p1_change_to == 'UP' and p1_direction != 'DOWN':

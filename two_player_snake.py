@@ -44,9 +44,9 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
     elif winner == "quit":
         winner_color = white
         message = "Game over"
-    elif winner == "collision":
+    elif winner == "draw":
         winner_color = white
-        message = "COLLISION!"
+        message = "Draw!"
 
     game_over_surface = main_font.render(message, True, winner_color)
     p1_score_surface = sub_font.render("Player 1: " + str(p1_score), True, p1_color)
@@ -69,7 +69,7 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
 
 def twop_snake(game_window, window_x, window_y):
 
-    snake_speed = 10    # Speed of the snake
+    snake_speed = 15    # Speed of the snake
     fps = pygame.time.Clock()  # Defines the intended frames per second
 
     p1_position = [100, 50]  # Sets the initial position of the snake
@@ -155,6 +155,16 @@ def twop_snake(game_window, window_x, window_y):
         if p2_direction == 'RIGHT':
             p2_position[0] += 10
 
+        #Sets potential collision status
+        if p1_direction == 'RIGHT' and p2_direction == 'LEFT':
+            collision = True
+        if p1_direction == 'LEFT' and p2_direction == 'RIGHT':
+            collision = True
+        if p1_direction == 'UP' and p2_direction == 'UP':
+            collision = True
+        if p1_direction == 'DOWN' and p2_direction == 'DOWN':
+            collision = True
+
         # Grows snake body
         p1_body.insert(0, list(p1_position))  # Grows head of body in correct position
         p2_body.insert(0, list(p2_position))
@@ -208,33 +218,25 @@ def twop_snake(game_window, window_x, window_y):
         if p2_position[1] > window_y - 10:   #bottom
             p2_position[1] = -10
 
+        # Draw conditions
+        if p1_position[0] == p2_position[0] and p1_position[1] == p2_position[1] and collision == True:
+            winner = 'draw'
+            game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+
         # Triggers game_over if the snake touches its own body or it's opponents body
         for block in p1_body[1:]:
-            if p1_position[0] == block[0] and p1_position[1] == block[1]:
+            if p1_position[0] == block[0] and p1_position[1] == block[1]:   # p1 touches own body
                 winner = 2
                 game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
-            if p2_position[0] == block[0] and p2_position[1] == block[1]:
+            if p2_position[0] == block[0] and p2_position[1] == block[1]:   # p2 touches p1's body
                 winner = 1
                 game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
         for block in p2_body[1:]:
-            if p2_position[0] == block[0] and p2_position[1] == block[1]:
+            if p2_position[0] == block[0] and p2_position[1] == block[1]:   # p2 touches own body
                 winner = 1
                 game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
-            if p1_position[0] == block[0] and p1_position[1] == block[1]:
+            if p1_position[0] == block[0] and p1_position[1] == block[1]:   #p1 touches p2s body
                 winner = 2
-                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
-            #Collision conditions
-            if p1_position[0] == p2_position [0] and p1_position[1] == p2_position[1] and p1_direction == 'RIGHT' and p2_direction == 'LEFT':
-                winner = 'collision'
-                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
-            if p1_position[0] == p2_position [0] and p1_position[1] == p2_position[1] and p1_direction == 'LEFT' and p2_direction == 'RIGHT':
-                winner = 'collision'
-                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
-            if p1_position[0] == p2_position [0] and p1_position[1] == p2_position[1] and p1_direction == 'UP' and p2_direction == 'DOWN':
-                winner = 'collision'
-                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
-            if p1_position[0] == p2_position [0] and p1_position[1] == p2_position[1] and p1_direction == 'DOWN' and p2_direction == 'UP':
-                winner = 'collision'
                 game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
 
         # Triggers game_over if the snake touches it's opponents body

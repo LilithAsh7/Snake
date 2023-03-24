@@ -40,8 +40,8 @@ def game_over(game_window, window_x, window_y, p1_score):
     game_window.blit(game_over_surface, game_over_rect)
     pygame.display.flip()
 
-    # Delays for 2 seconds and then quits the app
-    time.sleep(5)
+    # Delays for 5 seconds and then quits the app
+    time.sleep(3)
     pygame.quit()
     quit()
 

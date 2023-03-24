@@ -63,13 +63,13 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
     pygame.display.flip()
 
     # Delays for 2 seconds and then quits the app
-    time.sleep(2)
+    time.sleep(5)
     pygame.quit()
     quit()
 
 def twop_snake(game_window, window_x, window_y):
 
-    snake_speed = 15    # Speed of the snake
+    snake_speed = 13    # Speed of the snake
     fps = pygame.time.Clock()  # Defines the intended frames per second
 
     p1_position = [100, 50]  # Sets the initial position of the snake
@@ -238,16 +238,6 @@ def twop_snake(game_window, window_x, window_y):
             if p1_position[0] == block[0] and p1_position[1] == block[1]:   #p1 touches p2s body
                 winner = 2
                 game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
-
-        # Triggers game_over if the snake touches it's opponents body
-        #for block in p2_body[1:]:
-        #    if p1_position[0] == block[0] and p1_position[1] == block[1]:
-        #        winner = 2
-        #        game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
-        #for block in p1_body[1:]:
-        #    if p2_position[0] == block[0] and p2_position[1] == block[1]:
-        #        winner = 1
-        #        game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
 
         # Continuously display score
         show_score(game_window, p1_score, p2_score, 'times new roman', 20)

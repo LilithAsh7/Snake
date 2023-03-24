@@ -41,13 +41,13 @@ def game_over(game_window, window_x, window_y, p1_score):
     pygame.display.flip()
 
     # Delays for 2 seconds and then quits the app
-    time.sleep(2)
+    time.sleep(5)
     pygame.quit()
     quit()
 
 def onep_snake(game_window, window_x, window_y):
 
-    snake_speed = 15    # Speed of the snake
+    snake_speed = 13    # Speed of the snake
     fps = pygame.time.Clock()  # Defines the intended frames per second
 
     p1_position = [100, 50]  # Sets the initial position of the snake
@@ -140,11 +140,6 @@ def onep_snake(game_window, window_x, window_y):
             p1_position[1] = window_y - 10
         if p1_position[1] > window_y - 10:  # bottom
             p1_position[1] = 0
-
-        #if p1_position[0] < 0 or p1_position[0] > window_x - 10:
-            #game_over(game_window, window_x, window_y, p1_score)
-        #if p1_position[1] < 0 or p1_position[1] > window_y - 10:
-            #game_over(game_window, window_x, window_y, p1_score)
 
         #Triggers game_over if the snake touches its own body
         for block in p1_body[1:]:

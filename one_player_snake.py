@@ -1,5 +1,4 @@
 import pygame
-import time  # Used for timed delays
 import random
 import sys
 import m_menu

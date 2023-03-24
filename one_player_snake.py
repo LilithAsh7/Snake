@@ -3,6 +3,9 @@ import time  # Used for timed delays
 import random
 import sys
 
+import snake_master
+from snake_master import single_player, multiplayer, main_menu
+
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
 red = pygame.Color(255, 0, 0)

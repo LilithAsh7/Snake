@@ -2,15 +2,15 @@ import pygame
 import pygame_menu
 import one_player_snake
 import two_player_snake
-
+import main_menu
 # Size of the window
 window_x = 720
 window_y = 480
 
 pygame.init()  # Initializing the game window
 screen = pygame.display.set_mode((window_x, window_y), pygame.NOFRAME)  # Creating the game window using the x and y window sizes from earlier
-pygame.display.set_caption('Snake game')  # Setting the title of the window
 
+"""
 def single_player():
     one_player_snake.onep_snake(screen, window_x, window_y)
 
@@ -23,6 +23,6 @@ def main_menu():
     menu.add.button('Two Player', multiplayer)
     menu.add.button('Quit', pygame_menu.events.EXIT)
     menu.mainloop(screen)
-
-main_menu()
+"""
+main_menu(screen)
 

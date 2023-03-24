@@ -31,17 +31,26 @@ def show_score(game_window, p1_score, p2_score, font, size):
 
 # This function displays the game over screen
 # many of these variables and functions are the same as in show_score
-def game_over(game_window, window_x, window_y, p1_score, p2_score):
-    my_font = pygame.font.SysFont('times new roman', 50)
+def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
+    main_font = pygame.font.SysFont('times new roman', 50)
+    sub_font = pygame.font.SysFont('times new roman', 25)
 
-    if p1_score > p2_score:
+    if winner == 1:
         winner_color = p1_color
-        winner = 'Pink'
-    else:
+        message = "Player 1 wins!"
+    elif winner == 2:
         winner_color = p2_color
-        winner = 'Blue'
+        message = "Player 2 wins!"
+    elif winner == "quit":
+        winner_color = white
+        message = "Game over"
+    elif winner == "collision":
+        winner_color = white
+        message = "COLLISION!"
 
-    game_over_surface = my_font.render(winner + " wins!", True, winner_color)
+    game_over_surface = main_font.render(message, True, winner_color)
+    p1_score_surface = sub_font.render("Player 1: " + str(p1_score), True, p1_color)
+    p2_score_surface = sub_font.render("Player 2: " + str(p2_score), True, p2_color)
 
     game_over_rect = game_over_surface.get_rect()
 
@@ -49,6 +58,8 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score):
     game_over_rect.midtop = (window_x / 2, window_y / 4)
 
     game_window.blit(game_over_surface, game_over_rect)
+    game_window.blit(p1_score_surface, (305, 180))
+    game_window.blit(p2_score_surface, (305, 215))
     pygame.display.flip()
 
     # Delays for 2 seconds and then quits the app
@@ -106,8 +117,7 @@ def twop_snake(game_window, window_x, window_y):
                 if event.key == pygame.K_d:
                     p2_change_to = 'RIGHT'
                 if event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
+                    game_over(game_window, window_x, window_y, p1_score, p2_score, winner = "quit")
 
         # Compares change_to with direction to make sure move is valid, if it's valid it changed direction to that move
         if p1_change_to == 'UP' and p1_direction != 'DOWN':
@@ -179,7 +189,7 @@ def twop_snake(game_window, window_x, window_y):
         # Draws new fruit
         pygame.draw.rect(game_window, white, pygame.Rect(fruit_position[0], fruit_position[1], 10, 10))
 
-        # Triggers game_over if the snake touches the walls
+        # Wraps snake around if touching wall
 
         if p1_position[0] < 0:  #left
             p1_position[0] = window_x - 10
@@ -198,13 +208,44 @@ def twop_snake(game_window, window_x, window_y):
         if p2_position[1] > window_y - 10:   #bottom
             p2_position[1] = -10
 
-        # Triggers game_over if the snake touches its own body
+        # Triggers game_over if the snake touches its own body or it's opponents body
         for block in p1_body[1:]:
             if p1_position[0] == block[0] and p1_position[1] == block[1]:
-                game_over(game_window, window_x, window_y, p1_score, p2_score)
+                winner = 2
+                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+            if p2_position[0] == block[0] and p2_position[1] == block[1]:
+                winner = 1
+                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
         for block in p2_body[1:]:
             if p2_position[0] == block[0] and p2_position[1] == block[1]:
-                game_over(game_window, window_x, window_y, p1_score, p2_score)
+                winner = 1
+                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+            if p1_position[0] == block[0] and p1_position[1] == block[1]:
+                winner = 2
+                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+            #Collision conditions
+            if p1_position[0] == p2_position [0] and p1_position[1] == p2_position[1] and p1_direction == 'RIGHT' and p2_direction == 'LEFT':
+                winner = 'collision'
+                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+            if p1_position[0] == p2_position [0] and p1_position[1] == p2_position[1] and p1_direction == 'LEFT' and p2_direction == 'RIGHT':
+                winner = 'collision'
+                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+            if p1_position[0] == p2_position [0] and p1_position[1] == p2_position[1] and p1_direction == 'UP' and p2_direction == 'DOWN':
+                winner = 'collision'
+                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+            if p1_position[0] == p2_position [0] and p1_position[1] == p2_position[1] and p1_direction == 'DOWN' and p2_direction == 'UP':
+                winner = 'collision'
+                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+
+        # Triggers game_over if the snake touches it's opponents body
+        #for block in p2_body[1:]:
+        #    if p1_position[0] == block[0] and p1_position[1] == block[1]:
+        #        winner = 2
+        #        game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+        #for block in p1_body[1:]:
+        #    if p2_position[0] == block[0] and p2_position[1] == block[1]:
+        #        winner = 1
+        #        game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
 
         # Continuously display score
         show_score(game_window, p1_score, p2_score, 'times new roman', 20)

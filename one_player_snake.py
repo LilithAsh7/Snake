@@ -166,4 +166,3 @@ def onep_snake(game_window, window_x, window_y):
 
         # Refresh rate
         fps.tick(snake_speed)
-        print(p1_position)

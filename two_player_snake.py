@@ -9,28 +9,39 @@ red = pygame.Color(255, 0, 0)
 green = pygame.Color(0, 255, 0)
 blue = pygame.Color(112, 241, 255)
 pink = pygame.Color(250, 147, 241)
+p1_color = pink
+p2_color = blue
 
 # This function shows the score in the top left of the screen
-def show_score(game_window, p1_score, p2_score, color, font, size):
+def show_score(game_window, p1_score, p2_score, font, size):
     # Create font
     score_font = pygame.font.SysFont(font, size)
 
     # Create surface variable to be passed to .blit
-    score_surface = score_font.render('Score : ' + str(p1_score), True, color)
+    p1_score_surface = score_font.render('Score : ' + str(p1_score), True, p1_color)
+    p2_score_surface = score_font.render('Score : ' + str(p2_score), True, p2_color)
 
     # Create rectangle variable to define shape of text box for the score
-    score_rect = score_surface.get_rect()
+    score_rect = p1_score_surface.get_rect()
 
     # Use blit to draw the scoreboard onto the current screen
-    game_window.blit(score_surface, score_rect)
+    game_window.blit(p1_score_surface, score_rect)
+    game_window.blit(p2_score_surface, (0, 20))
 
 
 # This function displays the game over screen
 # many of these variables and functions are the same as in show_score
-def game_over(game_window, window_x, window_y, p1_score):
+def game_over(game_window, window_x, window_y, p1_score, p2_score):
     my_font = pygame.font.SysFont('times new roman', 50)
 
-    game_over_surface = my_font.render('Your score is : ' + str(p1_score), True, red)
+    if p1_score > p2_score:
+        winner_color = p1_color
+        winner = 'Pink'
+    else:
+        winner_color = p2_color
+        winner = 'Blue'
+
+    game_over_surface = my_font.render(winner + " wins!", True, winner_color)
 
     game_over_rect = game_over_surface.get_rect()
 
@@ -161,9 +172,9 @@ def twop_snake(game_window, window_x, window_y):
 
         # Draws a pink rectangle at each position in the snakes body
         for pos in p1_body:
-            pygame.draw.rect(game_window, pink, pygame.Rect(pos[0], pos[1], 10, 10))
+            pygame.draw.rect(game_window, p1_color, pygame.Rect(pos[0], pos[1], 10, 10))
         for pos in p2_body:
-            pygame.draw.rect(game_window, blue, pygame.Rect(pos[0], pos[1], 10, 10))
+            pygame.draw.rect(game_window, p2_color, pygame.Rect(pos[0], pos[1], 10, 10))
 
         # Draws new fruit
         pygame.draw.rect(game_window, white, pygame.Rect(fruit_position[0], fruit_position[1], 10, 10))
@@ -190,13 +201,13 @@ def twop_snake(game_window, window_x, window_y):
         # Triggers game_over if the snake touches its own body
         for block in p1_body[1:]:
             if p1_position[0] == block[0] and p1_position[1] == block[1]:
-                game_over(game_window, window_x, window_y, p1_score)
+                game_over(game_window, window_x, window_y, p1_score, p2_score)
         for block in p2_body[1:]:
             if p2_position[0] == block[0] and p2_position[1] == block[1]:
-                game_over(game_window, window_x, window_y, p1_score)
+                game_over(game_window, window_x, window_y, p1_score, p2_score)
 
         # Continuously display score
-        show_score(game_window, p1_score, p2_score, pink, 'times new roman', 20)
+        show_score(game_window, p1_score, p2_score, 'times new roman', 20)
 
         # Create surface variable to be passed to .blit
         quit_font = pygame.font.SysFont('times new roman', 15)
@@ -209,4 +220,3 @@ def twop_snake(game_window, window_x, window_y):
 
         # Refresh rate
         fps.tick(snake_speed)
-        print(p1_position[1])

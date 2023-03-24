@@ -7,14 +7,6 @@ import two_player_snake
 window_x = 720
 window_y = 480
 
-# Defining colors that will be used later
-black = pygame.Color(0, 0, 0)
-white = pygame.Color(255, 255, 255)
-red = pygame.Color(255, 0, 0)
-green = pygame.Color(0, 255, 0)
-blue = pygame.Color(0, 0, 255)
-pink = pygame.Color(250, 147, 241)
-
 pygame.init()  # Initializing the game window
 screen = pygame.display.set_mode((window_x, window_y), pygame.NOFRAME)  # Creating the game window using the x and y window sizes from earlier
 pygame.display.set_caption('Snake game')  # Setting the title of the window

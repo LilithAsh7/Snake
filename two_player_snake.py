@@ -34,6 +34,7 @@ def show_score(game_window, p1_score, p2_score, font, size):
 def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
     main_font = pygame.font.SysFont('times new roman', 50)
     sub_font = pygame.font.SysFont('times new roman', 25)
+    sub2_font = pygame.font.SysFont('times new roman', 15)
 
     if winner == 1:
         winner_color = p1_color
@@ -51,6 +52,7 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
     game_over_surface = main_font.render(message, True, winner_color)
     p1_score_surface = sub_font.render("Player 1: " + str(p1_score), True, p1_color)
     p2_score_surface = sub_font.render("Player 2: " + str(p2_score), True, p2_color)
+    inst_surface = sub2_font.render('Press esc to quit or enter to play again', True, white)
 
     game_over_rect = game_over_surface.get_rect()
 
@@ -60,11 +62,17 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
     game_window.blit(game_over_surface, game_over_rect)
     game_window.blit(p1_score_surface, (305, 180))
     game_window.blit(p2_score_surface, (305, 215))
+    game_window.blit(inst_surface, (245, 255))
     pygame.display.flip()
 
-    # Delays for 3 seconds and then restarts the game
-    time.sleep(3)
-    twop_snake(game_window, window_x, window_y)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+                if event.key == pygame.K_RETURN:
+                    twop_snake(game_window, window_x, window_y)
 
 def twop_snake(game_window, window_x, window_y):
 

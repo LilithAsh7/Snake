@@ -240,12 +240,6 @@ def twop_snake(game_window, window_x, window_y):
         # Continuously display score
         show_score(game_window, p1_score, p2_score, 'times new roman', 20)
 
-        # Create surface variable to be passed to .blit
-        quit_font = pygame.font.SysFont('times new roman', 15)
-        quit_surface = quit_font.render('Press esc to quit', True, white)
-        quit_rect = quit_surface.get_rect()
-        game_window.blit(quit_surface, (620, 463))
-
         # Refresh game screen
         pygame.display.update()
 

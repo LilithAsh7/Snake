@@ -7,11 +7,11 @@ black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
 red = pygame.Color(255, 0, 0)
 green = pygame.Color(0, 255, 0)
-blue = pygame.Color(0, 0, 255)
+blue = pygame.Color(112, 241, 255)
 pink = pygame.Color(250, 147, 241)
 
 # This function shows the score in the top left of the screen
-def show_score(game_window, p1_score, color, font, size):
+def show_score(game_window, p1_score, p2_score, color, font, size):
     # Create font
     score_font = pygame.font.SysFont(font, size)
 
@@ -45,13 +45,15 @@ def game_over(game_window, window_x, window_y, p1_score):
     pygame.quit()
     quit()
 
-def onep_snake(game_window, window_x, window_y):
+def twop_snake(game_window, window_x, window_y):
 
     snake_speed = 10    # Speed of the snake
     fps = pygame.time.Clock()  # Defines the intended frames per second
 
     p1_position = [100, 50]  # Sets the initial position of the snake
     p1_body = [[100, 50], [90, 50], [80, 50], [70, 50]]  # Sets the positions of the nodes that make the snakes body
+    p2_position = [620, 50]  # Sets the initial position of the snake
+    p2_body = [[620, 50], [630, 50], [640, 50], [650, 50]]  # Sets the positions of the nodes that make the snakes body
 
     # Sets a random fruit position within the window range and sets fruit_spawn to TRUE,
     # meaning that a fruit is on the board
@@ -60,12 +62,15 @@ def onep_snake(game_window, window_x, window_y):
 
     # Sets the initial direction that the snake is moving to "RIGHT"
     p1_direction = 'RIGHT'  # direction is the current direction of the snake
+    p2_direction = 'LEFT'
 
     # change_to is used to check whether the snake can move from the current direction to the next direction
     p1_change_to = p1_direction  # for example, if the snake is moving up it can't immediately switch to moving down
     # so if direction = "UP" and change_to = "DOWN" then nothing will happen
+    p2_change_to = p2_direction
 
     p1_score = 0  # Set initial score to zero
+    p2_score = 0
 
     # Main while loop of the game
     while True:
@@ -81,6 +86,14 @@ def onep_snake(game_window, window_x, window_y):
                     p1_change_to = 'LEFT'
                 if event.key == pygame.K_RIGHT:
                     p1_change_to = 'RIGHT'
+                if event.key == pygame.K_w:
+                    p2_change_to = 'UP'
+                if event.key == pygame.K_s:
+                    p2_change_to = 'DOWN'
+                if event.key == pygame.K_a:
+                    p2_change_to = 'LEFT'
+                if event.key == pygame.K_d:
+                    p2_change_to = 'RIGHT'
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
@@ -94,6 +107,14 @@ def onep_snake(game_window, window_x, window_y):
             p1_direction = 'LEFT'
         if p1_change_to == 'RIGHT' and p1_direction != 'LEFT':
             p1_direction = 'RIGHT'
+        if p2_change_to == 'UP' and p2_direction != 'DOWN':
+            p2_direction = 'UP'
+        if p2_change_to == 'DOWN' and p2_direction != 'UP':
+            p2_direction = 'DOWN'
+        if p2_change_to == 'LEFT' and p2_direction != 'RIGHT':
+            p2_direction = 'LEFT'
+        if p2_change_to == 'RIGHT' and p2_direction != 'LEFT':
+            p2_direction = 'RIGHT'
 
         # Moves snake based on direction
         if p1_direction == 'UP':
@@ -104,17 +125,32 @@ def onep_snake(game_window, window_x, window_y):
             p1_position[0] -= 10
         if p1_direction == 'RIGHT':
             p1_position[0] += 10
+        if p2_direction == 'UP':
+            p2_position[1] -= 10
+        if p2_direction == 'DOWN':
+            p2_position[1] += 10
+        if p2_direction == 'LEFT':
+            p2_position[0] -= 10
+        if p2_direction == 'RIGHT':
+            p2_position[0] += 10
 
         # Grows snake body
         p1_body.insert(0, list(p1_position))  # Grows head of body in correct position
+        p2_body.insert(0, list(p2_position))
 
         # If a piece of fruit is eaten the tailpiece of the snake is not popped off, so it gets 1 node longer
         # Increments score by 10 when fruit is eaten
         if p1_position[0] == fruit_position[0] and p1_position[1] == fruit_position[1]:
             p1_score += 10
             fruit_spawn = False
+            p2_body.pop()
+        elif p2_position[0] == fruit_position[0] and p2_position[1] == fruit_position[1]:
+            p2_score += 10
+            fruit_spawn = False
+            p1_body.pop()
         else:
             p1_body.pop()  # Pops off the final piece to simulate the snake moving
+            p2_body.pop()
 
         # Sets new random fruit position after its been eaten
         if not fruit_spawn:
@@ -126,34 +162,41 @@ def onep_snake(game_window, window_x, window_y):
         # Draws a pink rectangle at each position in the snakes body
         for pos in p1_body:
             pygame.draw.rect(game_window, pink, pygame.Rect(pos[0], pos[1], 10, 10))
+        for pos in p2_body:
+            pygame.draw.rect(game_window, blue, pygame.Rect(pos[0], pos[1], 10, 10))
 
         # Draws new fruit
         pygame.draw.rect(game_window, white, pygame.Rect(fruit_position[0], fruit_position[1], 10, 10))
 
         # Triggers game_over if the snake touches the walls
 
-        if p1_position[0] < 0:  # left
+        if p1_position[0] < 0:  #left
             p1_position[0] = window_x - 10
-        if p1_position[0] > window_x - 10:  # right
-            p1_position[0] = 0
-        if p1_position[1] < 0:  # top
+        if p1_position[0] > window_x - 10:   #right
+            p1_position[0] = -10
+        if p1_position[1] < 0:  #top
             p1_position[1] = window_y - 10
-        if p1_position[1] > window_y - 10:  # bottom
-            p1_position[1] = 0
+        if p1_position[1] > window_y - 10:   #bottom
+            p1_position[1] = -10
+        if p2_position[0] < 0:  #left
+            p2_position[0] = window_x - 10
+        if p2_position[0] > window_x - 10:   #right
+            p2_position[0] = -10
+        if p2_position[1] < 0:  #top
+            p2_position[1] = window_y - 10
+        if p2_position[1] > window_y - 10:   #bottom
+            p2_position[1] = -10
 
-        #if p1_position[0] < 0 or p1_position[0] > window_x - 10:
-            #game_over(game_window, window_x, window_y, p1_score)
-        #if p1_position[1] < 0 or p1_position[1] > window_y - 10:
-            #game_over(game_window, window_x, window_y, p1_score)
-
-        #Triggers game_over if the snake touches its own body
+        # Triggers game_over if the snake touches its own body
         for block in p1_body[1:]:
             if p1_position[0] == block[0] and p1_position[1] == block[1]:
-                print(p1_position)
+                game_over(game_window, window_x, window_y, p1_score)
+        for block in p2_body[1:]:
+            if p2_position[0] == block[0] and p2_position[1] == block[1]:
                 game_over(game_window, window_x, window_y, p1_score)
 
         # Continuously display score
-        show_score(game_window, p1_score, pink, 'times new roman', 20)
+        show_score(game_window, p1_score, p2_score, pink, 'times new roman', 20)
 
         # Create surface variable to be passed to .blit
         quit_font = pygame.font.SysFont('times new roman', 15)
@@ -166,4 +209,4 @@ def onep_snake(game_window, window_x, window_y):
 
         # Refresh rate
         fps.tick(snake_speed)
-        print(p1_position)
+        print(p1_position[1])

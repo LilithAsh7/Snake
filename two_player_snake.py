@@ -1,7 +1,7 @@
 import pygame
 import random
 import sys
-import m_menu
+import menus
 
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
@@ -69,7 +69,7 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    m_menu.main_menu(game_window, window_x, window_y)
+                    menus.main_menu(game_window, window_x, window_y)
                 if event.key == pygame.K_RETURN:
                     twop_snake(game_window, window_x, window_y)
 

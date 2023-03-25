@@ -1,8 +1,8 @@
 import pygame
 import random
 import sys
-import score_test
-import m_menu
+import s_funcs
+import menus
 
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
@@ -30,7 +30,7 @@ def show_score(game_window, p1_score, color, font, size):
 # many of these variables and functions are the same as in show_score
 def game_over(game_window, window_x, window_y, p1_score):
     
-    #score_test.main(p1_score)
+    s_funcs.main(p1_score)
     
     main_font = pygame.font.SysFont('times new roman', 50)
     sub_font = pygame.font.SysFont('times new roman', 20)
@@ -52,7 +52,7 @@ def game_over(game_window, window_x, window_y, p1_score):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    m_menu.main_menu(game_window, window_x, window_y)
+                    menus.main_menu(game_window, window_x, window_y)
                 if event.key == pygame.K_RETURN:
                     onep_snake(game_window, window_x, window_y)
 

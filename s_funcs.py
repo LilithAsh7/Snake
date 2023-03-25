@@ -8,7 +8,7 @@ def main(score):
 def set_score(score):
     scoredb = TinyDB("scores.json")
 
-    name = input('What is your name?')
+    name = "Jane Doe"
     score = score
     today = str(date.today())
     scoredb.insert({'name': name, 'score': score, 'date': today})
@@ -32,7 +32,3 @@ def sort_db():
             second = i
         elif int(i['score']) >= int(third['score']):
             third = i
-        
-    print(first['score'])
-    print(second['score'])
-    print(third['score'])

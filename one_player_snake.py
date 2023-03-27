@@ -1,6 +1,5 @@
 import pygame
 import random
-import sys
 import menus
 import time
 
@@ -10,6 +9,7 @@ red = pygame.Color(255, 0, 0)
 green = pygame.Color(0, 255, 0)
 blue = pygame.Color(0, 0, 255)
 pink = pygame.Color(250, 147, 241)
+
 
 # This function shows the score in the top left of the screen
 def show_score(game_window, p1_score, color, font, size):
@@ -29,7 +29,6 @@ def show_score(game_window, p1_score, color, font, size):
 # This function displays the game over screen
 # many of these variables and functions are the same as in show_score
 def game_over(game_window, window_x, window_y, p1_score):
-    
     main_font = pygame.font.SysFont('times new roman', 50)
 
     game_over_surface = main_font.render('Your score is : ' + str(p1_score), True, red)
@@ -43,11 +42,11 @@ def game_over(game_window, window_x, window_y, p1_score):
     pygame.display.flip()
 
     time.sleep(2)
-    menus.sp_score_input_menu(game_window, window_x, window_y, p1_score)
+    menus.sp_score_input_menu(game_window, p1_score)
+
 
 def onep_snake(game_window, window_x, window_y):
-
-    snake_speed = 13    # Speed of the snake
+    snake_speed = 13  # Speed of the snake
     fps = pygame.time.Clock()  # Defines the intended frames per second
 
     p1_position = [100, 50]  # Sets the initial position of the snake
@@ -57,6 +56,9 @@ def onep_snake(game_window, window_x, window_y):
     # meaning that a fruit is on the board
     fruit_position = [random.randrange(1, (window_x // 10)) * 10, random.randrange(1, (window_y // 10)) * 10]
     fruit_spawn = True
+    spawn = True
+    set_go = "Get set"
+    main_font = pygame.font.SysFont('times new roman', 50)
 
     # Sets the initial direction that the snake is moving to "RIGHT"
     p1_direction = 'RIGHT'  # direction is the current direction of the snake
@@ -140,7 +142,7 @@ def onep_snake(game_window, window_x, window_y):
         if p1_position[1] > window_y - 10:  # bottom
             p1_position[1] = 0
 
-        #Triggers game_over if the snake touches its own body
+        # Triggers game_over if the snake touches its own body
         for block in p1_body[1:]:
             if p1_position[0] == block[0] and p1_position[1] == block[1]:
                 game_over(game_window, window_x, window_y, p1_score)
@@ -150,6 +152,23 @@ def onep_snake(game_window, window_x, window_y):
 
         # Refresh game screen
         pygame.display.update()
+
+        if spawn == True:
+            spawn = False
+            ready_surface = main_font.render(set_go, True, red)
+            ready_rect = ready_surface.get_rect()
+            ready_rect.midtop = (window_x / 2, window_y / 4)
+            game_window.blit(ready_surface, ready_rect)
+            pygame.display.flip()
+            time.sleep(1)
+            game_window.fill(pygame.Color("black"), (ready_rect))
+            set_go = "Go!"
+            ready_surface = main_font.render(set_go, True, green)
+            ready_rect = ready_surface.get_rect()
+            ready_rect.midtop = (window_x / 2, window_y / 4)
+            game_window.blit(ready_surface, ready_rect)
+            pygame.display.flip()
+            time.sleep(1)
 
         # Refresh rate
         fps.tick(snake_speed)

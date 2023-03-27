@@ -1,6 +1,6 @@
 import pygame
+import pygame_menu
 import random
-import sys
 import menus
 import time
 
@@ -12,6 +12,7 @@ blue = pygame.Color(112, 241, 255)
 pink = pygame.Color(250, 147, 241)
 p1_color = pink
 p2_color = blue
+
 
 # This function shows the score in the top left of the screen
 def show_score(game_window, p1_score, p2_score, font, size):
@@ -33,7 +34,6 @@ def show_score(game_window, p1_score, p2_score, font, size):
 # This function displays the game over screen
 # many of these variables and functions are the same as in show_score
 def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
-
     main_font = pygame.font.SysFont('times new roman', 50)
     sub_font = pygame.font.SysFont('times new roman', 20)
 
@@ -46,7 +46,7 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
     elif winner == "quit":
         winner_color = white
         message = "Game over"
-    elif winner == "draw":
+    else:
         winner_color = white
         message = "Draw!"
 
@@ -63,29 +63,31 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
     game_over_rect2.midtop = (window_x / 2, (window_y / 4) + 50)
     game_over_rect3.midtop = (window_x / 2, (window_y / 4) + 75)
 
-
     game_window.blit(game_over_surface, game_over_rect)
     game_window.blit(p1_score_surface, game_over_rect2)
     game_window.blit(p2_score_surface, game_over_rect3)
     pygame.display.flip()
 
     time.sleep(2)
-    menus.mp_score_input_menu(game_window, window_x, window_y, p1_score, p2_score)
+    menus.mp_score_input_menu(game_window, p1_score, p2_score)
+
 
 def twop_snake(game_window, window_x, window_y):
-
-    snake_speed = 13    # Speed of the snake
+    snake_speed = 13  # Speed of the snake
     fps = pygame.time.Clock()  # Defines the intended frames per second
 
     p1_position = [100, 50]  # Sets the initial position of the snake
     p1_body = [[100, 50], [90, 50], [80, 50], [70, 50]]  # Sets the positions of the nodes that make the snakes body
-    p2_position = [400, 50]  # Sets the initial position of the snake
-    p2_body = [[400, 50], [410, 50], [420, 50], [430, 50]]  # Sets the positions of the nodes that make the snakes body
+    p2_position = [620, 50]  # Sets the initial position of the snake
+    p2_body = [[620, 50], [630, 50], [640, 50], [650, 50]]  # Sets the positions of the nodes that make the snakes body
 
     # Sets a random fruit position within the window range and sets fruit_spawn to TRUE,
     # meaning that a fruit is on the board
     fruit_position = [random.randrange(1, (window_x // 10)) * 10, random.randrange(1, (window_y // 10)) * 10]
     fruit_spawn = True
+    spawn = True
+    set_go = "Get set"
+    main_font = pygame.font.SysFont('times new roman', 50)
 
     # Sets the initial direction that the snake is moving to "RIGHT"
     p1_direction = 'RIGHT'  # direction is the current direction of the snake
@@ -196,21 +198,21 @@ def twop_snake(game_window, window_x, window_y):
 
         # Wraps snake around if touching wall
 
-        if p1_position[0] < 0:  #left
+        if p1_position[0] < 0:  # left
             p1_position[0] = window_x - 10
-        if p1_position[0] > window_x - 10:   #right
+        if p1_position[0] > window_x - 10:  # right
             p1_position[0] = -10
-        if p1_position[1] < 0:  #top
+        if p1_position[1] < 0:  # top
             p1_position[1] = window_y - 10
-        if p1_position[1] > window_y - 10:   #bottom
+        if p1_position[1] > window_y - 10:  # bottom
             p1_position[1] = -10
-        if p2_position[0] < 0:  #left
+        if p2_position[0] < 0:  # left
             p2_position[0] = window_x - 10
-        if p2_position[0] > window_x - 10:   #right
+        if p2_position[0] > window_x - 10:  # right
             p2_position[0] = -10
-        if p2_position[1] < 0:  #top
+        if p2_position[1] < 0:  # top
             p2_position[1] = window_y - 10
-        if p2_position[1] > window_y - 10:   #bottom
+        if p2_position[1] > window_y - 10:  # bottom
             p2_position[1] = -10
 
         # Draw conditions
@@ -220,17 +222,17 @@ def twop_snake(game_window, window_x, window_y):
 
         # Triggers game_over if the snake touches its own body or it's opponents body
         for block in p1_body[1:]:
-            if p1_position[0] == block[0] and p1_position[1] == block[1]:   # p1 touches own body
+            if p1_position[0] == block[0] and p1_position[1] == block[1]:  # p1 touches own body
                 winner = 2
                 game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
-            if p2_position[0] == block[0] and p2_position[1] == block[1]:   # p2 touches p1's body
+            if p2_position[0] == block[0] and p2_position[1] == block[1]:  # p2 touches p1's body
                 winner = 1
                 game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
         for block in p2_body[1:]:
-            if p2_position[0] == block[0] and p2_position[1] == block[1]:   # p2 touches own body
+            if p2_position[0] == block[0] and p2_position[1] == block[1]:  # p2 touches own body
                 winner = 1
                 game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
-            if p1_position[0] == block[0] and p1_position[1] == block[1]:   #p1 touches p2s body
+            if p1_position[0] == block[0] and p1_position[1] == block[1]:  # p1 touches p2s body
                 winner = 2
                 game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
 
@@ -239,6 +241,24 @@ def twop_snake(game_window, window_x, window_y):
 
         # Refresh game screen
         pygame.display.update()
+
+        if spawn == True:
+            spawn = False
+            ready_surface = main_font.render(set_go, True, red)
+            ready_rect = ready_surface.get_rect()
+            ready_rect.midtop = (window_x / 2, window_y / 4)
+            game_window.blit(ready_surface, ready_rect)
+            pygame.display.flip()
+            time.sleep(1)
+            game_window.fill(pygame.Color("black"), (ready_rect))
+            set_go = "Go!"
+            ready_surface = main_font.render(set_go, True, green)
+            ready_rect = ready_surface.get_rect()
+            ready_rect.midtop = (window_x / 2, window_y / 4)
+            game_window.blit(ready_surface, ready_rect)
+            pygame.display.flip()
+            time.sleep(1)
+
 
         # Refresh rate
         fps.tick(snake_speed)

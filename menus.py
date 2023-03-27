@@ -8,8 +8,8 @@ from tinydb import TinyDB
 dark_blue = pygame.Color(2, 15, 199)
 dark_pink = pygame.Color(199, 2, 143)
 
-def main_menu():
 
+def main_menu():
     main_window_x = 500
     main_window_y = 480
 
@@ -22,11 +22,11 @@ def main_menu():
     def multiplayer():
         mp_window_x = 720
         mp_window_y = 480
-        screen = pygame.display.set_mode((mp_window_x, mp_window_y), pygame.NOFRAME)
-        two_player_snake.twop_snake(screen, mp_window_x, mp_window_y)
+        new_screen = pygame.display.set_mode((mp_window_x, mp_window_y), pygame.NOFRAME)
+        two_player_snake.twop_snake(new_screen, mp_window_x, mp_window_y)
 
     def launch_high_score_menu():
-        high_score_menu(screen, main_window_x, main_window_y)
+        high_score_menu(screen)
 
     menu = pygame_menu.Menu('Snek', 400, 300, theme=pygame_menu.themes.THEME_SOLARIZED)
     menu.add.button('One player', single_player)
@@ -35,15 +35,15 @@ def main_menu():
     menu.add.button('Quit', pygame_menu.events.EXIT)
     menu.mainloop(screen)
 
-def high_score_menu(screen, window_x, window_y):
 
+def high_score_menu(screen):
     def launch_main_menu():
         main_menu()
 
     scoredb = TinyDB("scores.json")
     mp_table = scoredb.table("multiplayer")
 
-    #i = {'name': 'none', 'score': '0', 'date': '0000-00-00'}
+    # i = {'name': 'none', 'score': '0', 'date': '0000-00-00'}
     sp_first = {'name': 'none', 'score': '0', 'date': '0000-00-00'}
     sp_second = {'name': 'none', 'score': '0', 'date': '0000-00-00'}
     sp_third = {'name': 'none', 'score': '0', 'date': '0000-00-00'}
@@ -74,9 +74,9 @@ def high_score_menu(screen, window_x, window_y):
             mp_third = i
 
     sp_high_scores = ('1. ' + str(sp_first['score']) + ' - ' + sp_first["name"] + " " + sp_first["date"] + "\n"
-                   + "2. " + str(sp_second["score"]) + " - " + sp_second["name"] + " " + sp_second["date"] + "\n"
-                   + "3. " + str(sp_third["score"]) + " - " + sp_third["name"] + " " + sp_third["date"]
-                   )
+                      + "2. " + str(sp_second["score"]) + " - " + sp_second["name"] + " " + sp_second["date"] + "\n"
+                      + "3. " + str(sp_third["score"]) + " - " + sp_third["name"] + " " + sp_third["date"]
+                      )
     mp_high_scores = ('1. ' + str(mp_first['score']) + ' - ' + mp_first["name"] + " " + mp_first["date"] + "\n"
                       + "2. " + str(mp_second["score"]) + " - " + mp_second["name"] + " " + mp_second["date"] + "\n"
                       + "3. " + str(mp_third["score"]) + " - " + mp_third["name"] + " " + mp_third["date"]
@@ -90,14 +90,12 @@ def high_score_menu(screen, window_x, window_y):
     menu.add.button('Back', launch_main_menu)
     menu.mainloop(screen)
 
-def sp_score_input_menu(screen, window_x, window_y, p1_score):
 
+def sp_score_input_menu(screen, p1_score):
     def add_name(in_name):
         nonlocal p1_score
         nonlocal screen
-        nonlocal window_x
-        nonlocal window_y
-        
+
         scoredb = TinyDB("scores.json")
 
         name = in_name
@@ -107,18 +105,15 @@ def sp_score_input_menu(screen, window_x, window_y, p1_score):
 
     menu = pygame_menu.Menu('New Score', 300, 200, theme=pygame_menu.themes.THEME_SOLARIZED)
     menu.add.label('Score: ' + str(p1_score), max_char=-1, font_size=20)
-    menu.add.text_input('Name: ', default='XXX', maxchar = 3, onreturn = add_name)
+    menu.add.text_input('Name: ', default='XXX', maxchar=3, onreturn=add_name)
     menu.add.label('Press enter when done', max_char=-1, font_size=20)
     menu.mainloop(screen)
 
 
-def mp_score_input_menu(screen, window_x, window_y, p1_score, p2_score):
-
+def mp_score_input_menu(screen, p1_score, p2_score):
     def add_first_name(in_name):
         nonlocal p1_score
         nonlocal screen
-        nonlocal window_x
-        nonlocal window_y
 
         scoredb = TinyDB("scores.json")
         mp_table = scoredb.table("multiplayer")
@@ -127,17 +122,15 @@ def mp_score_input_menu(screen, window_x, window_y, p1_score, p2_score):
         today = str(date.today())
         mp_table.insert({'name': name, 'score': p1_score, 'date': today})
 
-        menu = pygame_menu.Menu('New Score', 300, 200, theme=pygame_menu.themes.THEME_SOLARIZED)
-        menu.add.label('Score: ' + str(p2_score), font_color = dark_blue, max_char=-1, font_size=20)
-        menu.add.text_input('Player 2: ', default='XXX', maxchar=3, onreturn=add_second_name)
-        menu.add.label('Press enter when done', max_char=-1, font_size=20)
-        menu.mainloop(screen)
+        new_menu = pygame_menu.Menu('New Score', 300, 200, theme=pygame_menu.themes.THEME_SOLARIZED)
+        new_menu.add.label('Score: ' + str(p2_score), font_color=dark_blue, max_char=-1, font_size=20)
+        new_menu.add.text_input('Player 2: ', default='XXX', maxchar=3, onreturn=add_second_name)
+        new_menu.add.label('Press enter when done', max_char=-1, font_size=20)
+        new_menu.mainloop(screen)
 
     def add_second_name(in_name):
         nonlocal p2_score
         nonlocal screen
-        nonlocal window_x
-        nonlocal window_y
 
         scoredb = TinyDB("scores.json")
         mp_table = scoredb.table("multiplayer")
@@ -148,7 +141,7 @@ def mp_score_input_menu(screen, window_x, window_y, p1_score, p2_score):
         main_menu()
 
     menu = pygame_menu.Menu('New Score', 300, 200, theme=pygame_menu.themes.THEME_SOLARIZED)
-    menu.add.label('Score: ' + str(p1_score), font_color = dark_pink, max_char=-1, font_size=20)
+    menu.add.label('Score: ' + str(p1_score), font_color=dark_pink, max_char=-1, font_size=20)
     menu.add.text_input('Player 1: ', default='XXX', maxchar=3, onreturn=add_first_name)
     menu.add.label('Press enter when done', max_char=-1, font_size=20)
     menu.mainloop(screen)

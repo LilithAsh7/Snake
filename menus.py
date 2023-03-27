@@ -2,6 +2,7 @@ import pygame
 import pygame_menu
 import one_player_snake
 import two_player_snake
+from datetime import date
 from tinydb import TinyDB
 
 def main_menu(screen, window_x, window_y):
@@ -35,7 +36,6 @@ def high_score_menu(screen, window_x, window_y):
     second = {'name': 'none', 'score': '0', 'date': '0000-00-00'}
     third = {'name': 'none', 'score': '0', 'date': '0000-00-00'}
 
-
     for i in scoredb:
         if int(i['score']) >= int(first['score']):
             third = second
@@ -49,9 +49,32 @@ def high_score_menu(screen, window_x, window_y):
 
     high_scores = '1. ' + str(first['score']) + ' - ' + first["name"] + " " + first["date"] + "\n" + "2. " + str(second["score"]) + " - " + second["name"] + " " + second["date"] + "\n" + "3. " + str(third["score"]) + " - " + third["name"] + " " + third["date"]
 
-    print(type(high_scores))
-
     menu = pygame_menu.Menu('High Scores', 400, 300, theme=pygame_menu.themes.THEME_SOLARIZED)
     menu.add.label(high_scores, max_char=-1, font_size=20)
     menu.add.button('Back', launch_main_menu)
+    menu.mainloop(screen)
+
+def score_input_menu(screen, score):
+
+    in_score = score
+
+    def add_name(in_name):
+        
+        nonlocal in_score
+
+        def launch_main_menu():
+            main_menu(screen, window_x, window_y)
+        
+        scoredb = TinyDB("scores.json")
+
+        name = in_name
+        score = in_score
+        today = str(date.today())
+        scoredb.insert({'name': name, 'score': score, 'date': today})
+
+        launch_main_menu()
+
+    menu = pygame_menu.Menu('New Score', 300, 200, theme=pygame_menu.themes.THEME_SOLARIZED)
+    menu.add.text_input('Name: ', default='XXX', maxchar = 3, onreturn = add_name)
+    menu.add.label('Press enter when done', max_char=-1, font_size=20)
     menu.mainloop(screen)

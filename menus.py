@@ -63,7 +63,8 @@ def score_input_menu(screen, window_x, window_y, score):
     #in_score = score
 
     def add_name(in_name):
-        
+
+
         nonlocal score
         nonlocal screen
         nonlocal window_x

@@ -82,8 +82,7 @@ def onep_snake(game_window, window_x, window_y):
                 if event.key == pygame.K_RIGHT:
                     p1_change_to = 'RIGHT'
                 if event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
+                    menus.main_menu()
 
         # Compares change_to with direction to make sure move is valid, if it's valid it changed direction to that move
         if p1_change_to == 'UP' and p1_direction != 'DOWN':

@@ -28,8 +28,6 @@ def main_menu():
     def launch_high_score_menu():
         high_score_menu(screen, main_window_x, main_window_y)
 
-    #menu_surface = pygame.Surface((400, 300))
-
     menu = pygame_menu.Menu('Snek', 400, 300, theme=pygame_menu.themes.THEME_SOLARIZED)
     menu.add.button('One player', single_player)
     menu.add.button('Two Player', multiplayer)

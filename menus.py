@@ -47,16 +47,19 @@ def high_score_menu(screen, window_x, window_y):
         elif int(i['score']) >= int(third['score']):
             third = i
 
-    high_scores = '1. ' + str(first['score']) + ' - ' + first["name"] + " " + first["date"] + "\n" + "2. " + str(second["score"]) + " - " + second["name"] + " " + second["date"] + "\n" + "3. " + str(third["score"]) + " - " + third["name"] + " " + third["date"]
+    high_scores = ('1. ' + str(first['score']) + ' - ' + first["name"] + " " + first["date"] + "\n"
+                   + "2. " + str(second["score"]) + " - " + second["name"] + " " + second["date"] + "\n"
+                   + "3. " + str(third["score"]) + " - " + third["name"] + " " + third["date"]
+                   )
 
     menu = pygame_menu.Menu('High Scores', 400, 300, theme=pygame_menu.themes.THEME_SOLARIZED)
     menu.add.label(high_scores, max_char=-1, font_size=20)
     menu.add.button('Back', launch_main_menu)
     menu.mainloop(screen)
 
-def score_input_menu(screen, score):
+def score_input_menu(screen, window_x, window_y score):
 
-    in_score = score
+    #in_score = score
 
     def add_name(in_name):
         

@@ -29,7 +29,7 @@ def show_score(game_window, p1_score, color, font, size):
 # This function displays the game over screen
 # many of these variables and functions are the same as in show_score
 def game_over(game_window, window_x, window_y, p1_score):
-    menus.score_input_menu(game_window, p1_score)    
+    menus.score_input_menu(game_window, window_x, window_y, p1_score)
     s_funcs.main(p1_score)
     
     main_font = pygame.font.SysFont('times new roman', 50)

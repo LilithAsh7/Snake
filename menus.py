@@ -8,17 +8,27 @@ from tinydb import TinyDB
 dark_blue = pygame.Color(2, 15, 199)
 dark_pink = pygame.Color(199, 2, 143)
 
-def main_menu(screen, window_x, window_y):
+def main_menu():
+
+    main_window_x = 500
+    main_window_y = 480
+
+    pygame.init()
+    screen = pygame.display.set_mode((main_window_x, main_window_y), pygame.NOFRAME)
+
     def single_player():
-        one_player_snake.onep_snake(screen, window_x, window_y)
+        one_player_snake.onep_snake(screen, main_window_x, main_window_y)
 
     def multiplayer():
-        two_player_snake.twop_snake(screen, window_x, window_y)
+        mp_window_x = 720
+        mp_window_y = 480
+        screen = pygame.display.set_mode((mp_window_x, mp_window_y), pygame.NOFRAME)
+        two_player_snake.twop_snake(screen, mp_window_x, mp_window_y)
 
     def launch_high_score_menu():
-        high_score_menu(screen, window_x, window_y)
+        high_score_menu(screen, main_window_x, main_window_y)
 
-    menu_surface = pygame.Surface((400, 300))
+    #menu_surface = pygame.Surface((400, 300))
 
     menu = pygame_menu.Menu('Snek', 400, 300, theme=pygame_menu.themes.THEME_SOLARIZED)
     menu.add.button('One player', single_player)
@@ -30,7 +40,7 @@ def main_menu(screen, window_x, window_y):
 def high_score_menu(screen, window_x, window_y):
 
     def launch_main_menu():
-        main_menu(screen, window_x, window_y)
+        main_menu()
 
     scoredb = TinyDB("scores.json")
     mp_table = scoredb.table("multiplayer")
@@ -95,7 +105,7 @@ def sp_score_input_menu(screen, window_x, window_y, p1_score):
         name = in_name
         today = str(date.today())
         scoredb.insert({'name': name, 'score': p1_score, 'date': today})
-        main_menu(screen, window_x, window_y)
+        main_menu()
 
     menu = pygame_menu.Menu('New Score', 300, 200, theme=pygame_menu.themes.THEME_SOLARIZED)
     menu.add.label('Score: ' + str(p1_score), max_char=-1, font_size=20)
@@ -137,7 +147,7 @@ def mp_score_input_menu(screen, window_x, window_y, p1_score, p2_score):
         name = in_name
         today = str(date.today())
         mp_table.insert({'name': name, 'score': p2_score, 'date': today})
-        main_menu(screen, window_x, window_y)
+        main_menu()
 
     menu = pygame_menu.Menu('New Score', 300, 200, theme=pygame_menu.themes.THEME_SOLARIZED)
     menu.add.label('Score: ' + str(p1_score), font_color = dark_pink, max_char=-1, font_size=20)

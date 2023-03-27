@@ -2,6 +2,7 @@ import pygame
 import random
 import sys
 import menus
+import time
 
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
@@ -18,8 +19,8 @@ def show_score(game_window, p1_score, p2_score, font, size):
     score_font = pygame.font.SysFont(font, size)
 
     # Create surface variable to be passed to .blit
-    p1_score_surface = score_font.render('Score : ' + str(p1_score), True, p1_color)
-    p2_score_surface = score_font.render('Score : ' + str(p2_score), True, p2_color)
+    p1_score_surface = score_font.render('P1 Score : ' + str(p1_score), True, p1_color)
+    p2_score_surface = score_font.render('P2 Score : ' + str(p2_score), True, p2_color)
 
     # Create rectangle variable to define shape of text box for the score
     score_rect = p1_score_surface.get_rect()
@@ -32,9 +33,9 @@ def show_score(game_window, p1_score, p2_score, font, size):
 # This function displays the game over screen
 # many of these variables and functions are the same as in show_score
 def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
+
     main_font = pygame.font.SysFont('times new roman', 50)
-    sub_font = pygame.font.SysFont('times new roman', 25)
-    sub2_font = pygame.font.SysFont('times new roman', 15)
+    sub_font = pygame.font.SysFont('times new roman', 20)
 
     if winner == 1:
         winner_color = p1_color
@@ -52,26 +53,24 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
     game_over_surface = main_font.render(message, True, winner_color)
     p1_score_surface = sub_font.render("Player 1: " + str(p1_score), True, p1_color)
     p2_score_surface = sub_font.render("Player 2: " + str(p2_score), True, p2_color)
-    inst_surface = sub2_font.render('Esc for main menu or Enter to play again', True, white)
 
     game_over_rect = game_over_surface.get_rect()
+    game_over_rect2 = p1_score_surface.get_rect()
+    game_over_rect3 = p2_score_surface.get_rect()
 
     # Sets the position of the game over score to be middle top
     game_over_rect.midtop = (window_x / 2, window_y / 4)
+    game_over_rect2.midtop = (window_x / 2, (window_y / 4) + 50)
+    game_over_rect3.midtop = (window_x / 2, (window_y / 4) + 75)
+
 
     game_window.blit(game_over_surface, game_over_rect)
-    game_window.blit(p1_score_surface, (305, 180))
-    game_window.blit(p2_score_surface, (305, 215))
-    game_window.blit(inst_surface, (245, 255))
+    game_window.blit(p1_score_surface, game_over_rect2)
+    game_window.blit(p2_score_surface, game_over_rect3)
     pygame.display.flip()
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    menus.main_menu(game_window, window_x, window_y)
-                if event.key == pygame.K_RETURN:
-                    twop_snake(game_window, window_x, window_y)
+    time.sleep(2)
+    menus.mp_score_input_menu(game_window, window_x, window_y, p1_score, p2_score)
 
 def twop_snake(game_window, window_x, window_y):
 
@@ -80,8 +79,8 @@ def twop_snake(game_window, window_x, window_y):
 
     p1_position = [100, 50]  # Sets the initial position of the snake
     p1_body = [[100, 50], [90, 50], [80, 50], [70, 50]]  # Sets the positions of the nodes that make the snakes body
-    p2_position = [620, 50]  # Sets the initial position of the snake
-    p2_body = [[620, 50], [630, 50], [640, 50], [650, 50]]  # Sets the positions of the nodes that make the snakes body
+    p2_position = [400, 50]  # Sets the initial position of the snake
+    p2_body = [[400, 50], [410, 50], [420, 50], [430, 50]]  # Sets the positions of the nodes that make the snakes body
 
     # Sets a random fruit position within the window range and sets fruit_spawn to TRUE,
     # meaning that a fruit is on the board

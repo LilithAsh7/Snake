@@ -1,8 +1,8 @@
 import pygame
 import random
 import sys
-import s_funcs
 import menus
+import time
 
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
@@ -29,14 +29,10 @@ def show_score(game_window, p1_score, color, font, size):
 # This function displays the game over screen
 # many of these variables and functions are the same as in show_score
 def game_over(game_window, window_x, window_y, p1_score):
-    menus.score_input_menu(game_window, window_x, window_y, p1_score)
-    s_funcs.main(p1_score)
     
     main_font = pygame.font.SysFont('times new roman', 50)
-    sub_font = pygame.font.SysFont('times new roman', 20)
 
     game_over_surface = main_font.render('Your score is : ' + str(p1_score), True, red)
-    inst_surface = sub_font.render('Esc for main menu or enter to play again', True, white)
 
     game_over_rect = game_over_surface.get_rect()
 
@@ -44,17 +40,10 @@ def game_over(game_window, window_x, window_y, p1_score):
     game_over_rect.midtop = (window_x / 2, window_y / 4)
 
     game_window.blit(game_over_surface, game_over_rect)
-    game_window.blit(inst_surface, (205, 180))
     pygame.display.flip()
 
-    # Delays for 3 seconds and then restart the game
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    menus.main_menu(game_window, window_x, window_y)
-                if event.key == pygame.K_RETURN:
-                    onep_snake(game_window, window_x, window_y)
+    time.sleep(2)
+    menus.sp_score_input_menu(game_window, window_x, window_y, p1_score)
 
 def onep_snake(game_window, window_x, window_y):
 

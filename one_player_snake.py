@@ -144,7 +144,6 @@ def onep_snake(game_window, window_x, window_y):
         #Triggers game_over if the snake touches its own body
         for block in p1_body[1:]:
             if p1_position[0] == block[0] and p1_position[1] == block[1]:
-                print(p1_position)
                 game_over(game_window, window_x, window_y, p1_score)
 
         # Continuously display score

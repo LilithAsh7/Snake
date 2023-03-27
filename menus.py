@@ -25,6 +25,7 @@ def main_menu(screen, window_x, window_y):
     menu.mainloop(screen)
 
 def high_score_menu(screen, window_x, window_y):
+#def high_score_menu(screen, window_x, window_y):
 
     def launch_main_menu():
         main_menu(screen, window_x, window_y)
@@ -57,25 +58,24 @@ def high_score_menu(screen, window_x, window_y):
     menu.add.button('Back', launch_main_menu)
     menu.mainloop(screen)
 
-def score_input_menu(screen, window_x, window_y score):
+def score_input_menu(screen, window_x, window_y, score):
 
     #in_score = score
 
     def add_name(in_name):
         
-        nonlocal in_score
-
-        def launch_main_menu():
-            main_menu(screen, window_x, window_y)
+        nonlocal score
+        nonlocal screen
+        nonlocal window_x
+        nonlocal window_y
         
         scoredb = TinyDB("scores.json")
 
         name = in_name
-        score = in_score
         today = str(date.today())
         scoredb.insert({'name': name, 'score': score, 'date': today})
 
-        launch_main_menu()
+        main_menu(screen, window_x, window_y)
 
     menu = pygame_menu.Menu('New Score', 300, 200, theme=pygame_menu.themes.THEME_SOLARIZED)
     menu.add.text_input('Name: ', default='XXX', maxchar = 3, onreturn = add_name)

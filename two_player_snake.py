@@ -3,20 +3,16 @@ import random
 import menus
 import time
 
-black = pygame.Color(0, 0, 0)
-white = pygame.Color(255, 255, 255)
-red = pygame.Color(255, 0, 0)
-green = pygame.Color(0, 255, 0)
-blue = pygame.Color(112, 241, 255)
-pink = pygame.Color(250, 147, 241)
-p1_color = pink
-p2_color = blue
-
 
 # This function shows the score in the top left of the screen
-def show_score(game_window, p1_score, p2_score, font, size):
+def show_score(game_window, p1_score, p2_score):
+    blue = pygame.Color(112, 241, 255)
+    pink = pygame.Color(250, 147, 241)
+    p1_color = pink
+    p2_color = blue
+
     # Create font
-    score_font = pygame.font.SysFont(font, size)
+    score_font = pygame.font.SysFont('times new roman', 20)
 
     # Create surface variable to be passed to .blit
     p1_score_surface = score_font.render('P1 Score : ' + str(p1_score), True, p1_color)
@@ -30,25 +26,45 @@ def show_score(game_window, p1_score, p2_score, font, size):
     game_window.blit(p2_score_surface, (0, 20))
 
 
+# Creates formatting info for game_over_message
+def get_game_over_message(p1_score, p2_score, winner):
+    blue = pygame.Color(112, 241, 255)
+    pink = pygame.Color(250, 147, 241)
+    white = pygame.Color(255, 255, 255)
+    p1_color = pink
+    p2_color = blue
+
+    message_info = {}
+
+    if winner == 1:
+        message_info["color"] = p1_color
+        message_info["message"] = "Player 1 wins!"
+    elif winner == 2:
+        message_info["color"] = p2_color
+        message_info["message"] = "Player 2 wins!"
+    else:
+        message_info["color"] = white
+        message_info["message"] = "Draw"
+
+    message_info["p1_score"] = p1_score
+    message_info["p2_score"] = p2_score
+
+    return message_info
+
+
 # This function displays the game over screen
-# many of these variables and functions are the same as in show_score
-def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
+def game_over_message(game_window, window_x, window_y, message_info):
+    blue = pygame.Color(112, 241, 255)
+    pink = pygame.Color(250, 147, 241)
+    p1_color = pink
+    p2_color = blue
+
     main_font = pygame.font.SysFont('times new roman', 50)
     sub_font = pygame.font.SysFont('times new roman', 20)
 
-    if winner == 1:
-        winner_color = p1_color
-        message = "Player 1 wins!"
-    elif winner == 2:
-        winner_color = p2_color
-        message = "Player 2 wins!"
-    else:
-        winner_color = white
-        message = "Draw!"
-
-    game_over_surface = main_font.render(message, True, winner_color)
-    p1_score_surface = sub_font.render("Player 1: " + str(p1_score), True, p1_color)
-    p2_score_surface = sub_font.render("Player 2: " + str(p2_score), True, p2_color)
+    game_over_surface = main_font.render(message_info["message"], True, message_info["color"])
+    p1_score_surface = sub_font.render("Player 1: " + str(message_info["p1_score"]), True, p1_color)
+    p2_score_surface = sub_font.render("Player 2: " + str(message_info["p2_score"]), True, p2_color)
 
     game_over_rect = game_over_surface.get_rect()
     game_over_rect2 = p1_score_surface.get_rect()
@@ -64,11 +80,17 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
     game_window.blit(p2_score_surface, game_over_rect3)
     pygame.display.flip()
 
-    time.sleep(2)
-    menus.mp_score_input_menu(game_window, p1_score, p2_score)
 
+def two_player_snake(game_window, window_x, window_y):
+    black = pygame.Color(0, 0, 0)
+    red = pygame.Color(255, 0, 0)
+    green = pygame.Color(0, 255, 0)
+    blue = pygame.Color(112, 241, 255)
+    pink = pygame.Color(250, 147, 241)
+    white = pygame.Color(255, 255, 255)
+    p1_color = pink
+    p2_color = blue
 
-def twop_snake(game_window, window_x, window_y):
     snake_speed = 13  # Speed of the snake
     fps = pygame.time.Clock()  # Defines the intended frames per second
 
@@ -121,11 +143,20 @@ def twop_snake(game_window, window_x, window_y):
                     p2_change_to = 'RIGHT'
                 if event.key == pygame.K_ESCAPE:
                     if p1_score > p2_score:
-                        game_over(game_window, window_x, window_y, p1_score, p2_score, 1)
+                        message_info = get_game_over_message(p1_score, p2_score, 1)
+                        game_over_message(game_window, window_x, window_y, message_info)
+                        time.sleep(2)
+                        menus.mp_score_input_menu(game_window, message_info["p1_score"], message_info["p2_score"])
                     elif p1_score < p2_score:
-                        game_over(game_window, window_x, window_y, p1_score, p2_score, 2)
+                        message_info = get_game_over_message(p1_score, p2_score, 2)
+                        game_over_message(game_window, window_x, window_y, message_info)
+                        time.sleep(2)
+                        menus.mp_score_input_menu(game_window, message_info["p1_score"], message_info["p2_score"])
                     else:
-                        game_over(game_window, window_x, window_y, p1_score, p2_score, 3)
+                        message_info = get_game_over_message(p1_score, p2_score, 3)
+                        game_over_message(game_window, window_x, window_y, message_info)
+                        time.sleep(2)
+                        menus.mp_score_input_menu(game_window, message_info["p1_score"], message_info["p2_score"])
 
         # Compares change_to with direction to make sure move is valid, if it's valid it changed direction to that move
         if p1_change_to == 'UP' and p1_direction != 'DOWN':
@@ -218,27 +249,37 @@ def twop_snake(game_window, window_x, window_y):
 
         # Draw conditions
         if p1_position[0] == p2_position[0] and p1_position[1] == p2_position[1]:
-            winner = 'draw'
-            game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+            message_info = get_game_over_message(p1_score, p2_score, 3)
+            game_over_message(game_window, window_x, window_y, message_info)
+            time.sleep(2)
+            menus.mp_score_input_menu(game_window, message_info["p1_score"], message_info["p2_score"])
 
         # Triggers game_over if the snake touches its own body or it's opponents body
         for block in p1_body[1:]:
             if p1_position[0] == block[0] and p1_position[1] == block[1]:  # p1 touches own body
-                winner = 2
-                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+                message_info = get_game_over_message(p1_score, p2_score, 2)
+                game_over_message(game_window, window_x, window_y, message_info)
+                time.sleep(2)
+                menus.mp_score_input_menu(game_window, message_info["p1_score"], message_info["p2_score"])
             if p2_position[0] == block[0] and p2_position[1] == block[1]:  # p2 touches p1's body
-                winner = 1
-                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+                message_info = get_game_over_message(p1_score, p2_score, 1)
+                game_over_message(game_window, window_x, window_y, message_info)
+                time.sleep(2)
+                menus.mp_score_input_menu(game_window, message_info["p1_score"], message_info["p2_score"])
         for block in p2_body[1:]:
             if p2_position[0] == block[0] and p2_position[1] == block[1]:  # p2 touches own body
-                winner = 1
-                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+                message_info = get_game_over_message(p1_score, p2_score, 1)
+                game_over_message(game_window, window_x, window_y, message_info)
+                time.sleep(2)
+                menus.mp_score_input_menu(game_window, message_info["p1_score"], message_info["p2_score"])
             if p1_position[0] == block[0] and p1_position[1] == block[1]:  # p1 touches p2s body
-                winner = 2
-                game_over(game_window, window_x, window_y, p1_score, p2_score, winner)
+                message_info = get_game_over_message(p1_score, p2_score, 2)
+                game_over_message(game_window, window_x, window_y, message_info)
+                time.sleep(2)
+                menus.mp_score_input_menu(game_window, message_info["p1_score"], message_info["p2_score"])
 
         # Continuously display score
-        show_score(game_window, p1_score, p2_score, 'times new roman', 20)
+        show_score(game_window, p1_score, p2_score)
 
         # Refresh game screen
         pygame.display.update()

@@ -6,6 +6,8 @@ from datetime import date
 from tinydb import TinyDB
 
 
+# Creates main menu
+# with single player, multiplayer, high score, and quit buttons.
 def main_menu():
     main_window_x = 500
     main_window_y = 480
@@ -15,14 +17,14 @@ def main_menu():
         (main_window_x, main_window_y), pygame.NOFRAME)
 
     def single_player():
-        one_player_snake.onep_snake(screen, main_window_x, main_window_y)
+        one_player_snake.one_player_snake(screen, main_window_x, main_window_y)
 
     def multiplayer():
         mp_window_x = 720
         mp_window_y = 480
         new_screen = pygame.display.set_mode(
             (mp_window_x, mp_window_y), pygame.NOFRAME)
-        two_player_snake.twop_snake(new_screen, mp_window_x, mp_window_y)
+        two_player_snake.two_player_snake(new_screen, mp_window_x, mp_window_y)
 
     def launch_high_score_menu():
         high_score_menu(screen)
@@ -38,8 +40,8 @@ def main_menu():
 
 # Gets top 3 high scores for single player and multiplayer
 def get_high_scores():
-    scoredb = TinyDB("scores.json")
-    mp_table = scoredb.table("multiplayer")
+    score_database = TinyDB("scores.json")
+    mp_table = score_database.table("multiplayer")
 
     sp_first = {'name': 'none', 'score': '0', 'date': '0000-00-00'}
     sp_second = {'name': 'none', 'score': '0', 'date': '0000-00-00'}
@@ -50,7 +52,7 @@ def get_high_scores():
 
     all_high_scores = []
 
-    for i in scoredb:
+    for i in score_database:
         if int(i['score']) >= int(sp_first['score']):
             sp_third = sp_second
             sp_second = sp_first
@@ -108,14 +110,15 @@ def high_score_menu(screen):
     menu.mainloop(screen)
 
 
+# Creates single player score input menu
 def sp_score_input_menu(screen, p1_score):
+    # Adds players input name
     def add_name(in_name):
-
-        scoredb = TinyDB("scores.json")
+        score_database = TinyDB("scores.json")
 
         name = in_name
         today = str(date.today())
-        scoredb.insert({'name': name, 'score': p1_score, 'date': today})
+        score_database.insert({'name': name, 'score': p1_score, 'date': today})
         main_menu()
 
     menu = pygame_menu.Menu(
@@ -126,15 +129,15 @@ def sp_score_input_menu(screen, p1_score):
     menu.add.label('Press enter when done', max_char=-1, font_size=20)
     menu.mainloop(screen)
 
-#Displays high score input menu
-def mp_score_input_menu(screen, p1_score, p2_score):
 
-    #Adds player 1's name
+# Displays multiplayer high score input menu
+def mp_score_input_menu(screen, p1_score, p2_score):
+    # Adds player 1's input name
     def add_first_name(in_name):
         dark_blue = pygame.Color(2, 15, 199)
 
-        scoredb = TinyDB("scores.json")
-        mp_table = scoredb.table("multiplayer")
+        score_database = TinyDB("scores.json")
+        mp_table = score_database.table("multiplayer")
 
         name = in_name
         today = str(date.today())
@@ -153,11 +156,10 @@ def mp_score_input_menu(screen, p1_score, p2_score):
             'Press enter when done', max_char=-1, font_size=20)
         new_menu.mainloop(screen)
 
-    #Adds players 2's name
+    # Adds players 2's input name
     def add_second_name(in_name):
-
-        scoredb = TinyDB("scores.json")
-        mp_table = scoredb.table("multiplayer")
+        score_database = TinyDB("scores.json")
+        mp_table = score_database.table("multiplayer")
 
         name = in_name
         today = str(date.today())

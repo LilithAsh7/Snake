@@ -3,21 +3,16 @@ import random
 import menus
 import time
 
-black = pygame.Color(0, 0, 0)
-white = pygame.Color(255, 255, 255)
-red = pygame.Color(255, 0, 0)
-green = pygame.Color(0, 255, 0)
-blue = pygame.Color(0, 0, 255)
-pink = pygame.Color(250, 147, 241)
-
 
 # This function shows the score in the top left of the screen
-def show_score(game_window, p1_score, color, font, size):
+def show_score(game_window, p1_score):
+    pink = pygame.Color(250, 147, 241)
+
     # Create font
-    score_font = pygame.font.SysFont(font, size)
+    score_font = pygame.font.SysFont('times new roman', 20)
 
     # Create surface variable to be passed to .blit
-    score_surface = score_font.render('Score : ' + str(p1_score), True, color)
+    score_surface = score_font.render('Score : ' + str(p1_score), True, pink)
 
     # Create rectangle variable to define shape of text box for the score
     score_rect = score_surface.get_rect()
@@ -29,6 +24,8 @@ def show_score(game_window, p1_score, color, font, size):
 # This function displays the game over screen
 # many of these variables and functions are the same as in show_score
 def game_over(game_window, window_x, window_y, p1_score):
+    red = pygame.Color(255, 0, 0)
+
     main_font = pygame.font.SysFont('times new roman', 50)
 
     game_over_surface = main_font.render('Your score is : ' + str(p1_score), True, red)
@@ -45,7 +42,13 @@ def game_over(game_window, window_x, window_y, p1_score):
     menus.sp_score_input_menu(game_window, p1_score)
 
 
-def onep_snake(game_window, window_x, window_y):
+def one_player_snake(game_window, window_x, window_y):
+    black = pygame.Color(0, 0, 0)
+    white = pygame.Color(255, 255, 255)
+    red = pygame.Color(255, 0, 0)
+    green = pygame.Color(0, 255, 0)
+    pink = pygame.Color(250, 147, 241)
+
     snake_speed = 13  # Speed of the snake
     fps = pygame.time.Clock()  # Defines the intended frames per second
 
@@ -148,7 +151,7 @@ def onep_snake(game_window, window_x, window_y):
                 game_over(game_window, window_x, window_y, p1_score)
 
         # Continuously display score
-        show_score(game_window, p1_score, pink, 'times new roman', 20)
+        show_score(game_window, p1_score)
 
         # Refresh game screen
         pygame.display.update()

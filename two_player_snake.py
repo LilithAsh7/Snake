@@ -1,5 +1,4 @@
 import pygame
-import pygame_menu
 import random
 import menus
 import time
@@ -43,9 +42,6 @@ def game_over(game_window, window_x, window_y, p1_score, p2_score, winner):
     elif winner == 2:
         winner_color = p2_color
         message = "Player 2 wins!"
-    elif winner == "quit":
-        winner_color = white
-        message = "Game over"
     else:
         winner_color = white
         message = "Draw!"
@@ -124,7 +120,12 @@ def twop_snake(game_window, window_x, window_y):
                 if event.key == pygame.K_d:
                     p2_change_to = 'RIGHT'
                 if event.key == pygame.K_ESCAPE:
-                    menus.main_menu()
+                    if p1_score > p2_score:
+                        game_over(game_window, window_x, window_y, p1_score, p2_score, 1)
+                    elif p1_score < p2_score:
+                        game_over(game_window, window_x, window_y, p1_score, p2_score, 2)
+                    else:
+                        game_over(game_window, window_x, window_y, p1_score, p2_score, 3)
 
         # Compares change_to with direction to make sure move is valid, if it's valid it changed direction to that move
         if p1_change_to == 'UP' and p1_direction != 'DOWN':
@@ -242,7 +243,7 @@ def twop_snake(game_window, window_x, window_y):
         # Refresh game screen
         pygame.display.update()
 
-        if spawn == True:
+        if spawn:
             spawn = False
             ready_surface = main_font.render(set_go, True, red)
             ready_rect = ready_surface.get_rect()
@@ -250,7 +251,7 @@ def twop_snake(game_window, window_x, window_y):
             game_window.blit(ready_surface, ready_rect)
             pygame.display.flip()
             time.sleep(1)
-            game_window.fill(pygame.Color("black"), (ready_rect))
+            game_window.fill(pygame.Color("black"), ready_rect)
             set_go = "Go!"
             ready_surface = main_font.render(set_go, True, green)
             ready_rect = ready_surface.get_rect()
@@ -258,7 +259,6 @@ def twop_snake(game_window, window_x, window_y):
             game_window.blit(ready_surface, ready_rect)
             pygame.display.flip()
             time.sleep(1)
-
 
         # Refresh rate
         fps.tick(snake_speed)

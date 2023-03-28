@@ -84,7 +84,7 @@ def onep_snake(game_window, window_x, window_y):
                 if event.key == pygame.K_RIGHT:
                     p1_change_to = 'RIGHT'
                 if event.key == pygame.K_ESCAPE:
-                    menus.main_menu()
+                    game_over(game_window, window_x, window_y, p1_score)
 
         # Compares change_to with direction to make sure move is valid, if it's valid it changed direction to that move
         if p1_change_to == 'UP' and p1_direction != 'DOWN':
@@ -153,7 +153,7 @@ def onep_snake(game_window, window_x, window_y):
         # Refresh game screen
         pygame.display.update()
 
-        if spawn == True:
+        if spawn:
             spawn = False
             ready_surface = main_font.render(set_go, True, red)
             ready_rect = ready_surface.get_rect()
@@ -161,7 +161,7 @@ def onep_snake(game_window, window_x, window_y):
             game_window.blit(ready_surface, ready_rect)
             pygame.display.flip()
             time.sleep(1)
-            game_window.fill(pygame.Color("black"), (ready_rect))
+            game_window.fill(pygame.Color("black"), ready_rect)
             set_go = "Go!"
             ready_surface = main_font.render(set_go, True, green)
             ready_rect = ready_surface.get_rect()

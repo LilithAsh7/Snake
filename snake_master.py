@@ -2,7 +2,7 @@ import sys
 import subprocess
 
 
-# Installs neccessary modules and starts the main menu
+# Installs necessary modules and starts the main menu
 def main():
     install()
     import menus
@@ -11,11 +11,11 @@ def main():
 
 # Checks for modules and installs them if not present
 def install():
-    importlist = ["pygame", "pygame_menu", "tinydb"]
+    import_list = ["pygame", "pygame_menu", "tinydb"]
 
     print("Checking installations...")
 
-    for lib in importlist:
+    for lib in import_list:
         try:
             globals()[lib] = __import__(lib)
             print(f"{lib} currently installed")

@@ -4,49 +4,49 @@ import menus
 import time
 
 
-# This function shows the score in the top left of the screen
+# This function shows the score in the top left of the game window
 def show_score(game_window, p1_score):
     pink = pygame.Color(250, 147, 241)
 
-    # Create font
     score_font = pygame.font.SysFont('times new roman', 20)
 
-    # Create surface variable to be passed to .blit
-    score_surface = score_font.render('Score : ' + str(p1_score), True, pink)
+    # Creates object to render "Score :" in desired font and color (pink)
+    score_surface = score_font.render(
+        'Score : ' + str(p1_score), True, pink)
 
-    # Create rectangle variable to define shape of text box for the score
+    # Gets rectangular area of the score surface
     score_rect = score_surface.get_rect()
 
-    # Use blit to draw the scoreboard onto the current screen
+    # Use blit to draw score_surface at the coordinates score_rect
     game_window.blit(score_surface, score_rect)
 
 
-# This function displays the game over screen
-# many of these variables and functions are the same as in show_score
+# This function displays the game over message
 def game_over(game_window, window_x, window_y, p1_score):
     red = pygame.Color(255, 0, 0)
 
     main_font = pygame.font.SysFont('times new roman', 50)
 
-    game_over_surface = main_font.render('Your score is : ' + str(p1_score), True, red)
+    # Creates object to render game over message
+    game_over_surface = main_font.render(
+        'Your score is : ' + str(p1_score), True, red)
 
+    # Gets rectangular area of game over surface
     game_over_rect = game_over_surface.get_rect()
 
-    # Sets the position of the game over score to be middle top
+    # Sets the position of the game over message to be middle top
     game_over_rect.midtop = (window_x / 2, window_y / 4)
 
+    # Draws the game over surface at the coordinates game_over_rect
     game_window.blit(game_over_surface, game_over_rect)
-    pygame.display.flip()
 
-    time.sleep(2)
-    menus.sp_score_input_menu(game_window, p1_score)
+    # Updates the display
+    pygame.display.flip()
 
 
 def one_player_snake(game_window, window_x, window_y):
     black = pygame.Color(0, 0, 0)
     white = pygame.Color(255, 255, 255)
-    red = pygame.Color(255, 0, 0)
-    green = pygame.Color(0, 255, 0)
     pink = pygame.Color(250, 147, 241)
 
     snake_speed = 13  # Speed of the snake
@@ -60,8 +60,6 @@ def one_player_snake(game_window, window_x, window_y):
     fruit_position = [random.randrange(1, (window_x // 10)) * 10, random.randrange(1, (window_y // 10)) * 10]
     fruit_spawn = True
     spawn = True
-    set_go = "Get set"
-    main_font = pygame.font.SysFont('times new roman', 50)
 
     # Sets the initial direction that the snake is moving to "RIGHT"
     p1_direction = 'RIGHT'  # direction is the current direction of the snake
@@ -88,6 +86,8 @@ def one_player_snake(game_window, window_x, window_y):
                     p1_change_to = 'RIGHT'
                 if event.key == pygame.K_ESCAPE:
                     game_over(game_window, window_x, window_y, p1_score)
+                    time.sleep(2)
+                    menus.sp_score_input_menu(game_window, p1_score)
 
         # Compares change_to with direction to make sure move is valid, if it's valid it changed direction to that move
         if p1_change_to == 'UP' and p1_direction != 'DOWN':
@@ -149,29 +149,18 @@ def one_player_snake(game_window, window_x, window_y):
         for block in p1_body[1:]:
             if p1_position[0] == block[0] and p1_position[1] == block[1]:
                 game_over(game_window, window_x, window_y, p1_score)
+                time.sleep(2)
+                menus.sp_score_input_menu(game_window, p1_score)
 
         # Continuously display score
         show_score(game_window, p1_score)
 
-        # Refresh game screen
-        pygame.display.update()
-
         if spawn:
+            menus.spawn_countdown(game_window, window_x, window_y)
             spawn = False
-            ready_surface = main_font.render(set_go, True, red)
-            ready_rect = ready_surface.get_rect()
-            ready_rect.midtop = (window_x / 2, window_y / 4)
-            game_window.blit(ready_surface, ready_rect)
-            pygame.display.flip()
-            time.sleep(1)
-            game_window.fill(pygame.Color("black"), ready_rect)
-            set_go = "Go!"
-            ready_surface = main_font.render(set_go, True, green)
-            ready_rect = ready_surface.get_rect()
-            ready_rect.midtop = (window_x / 2, window_y / 4)
-            game_window.blit(ready_surface, ready_rect)
-            pygame.display.flip()
-            time.sleep(1)
+
+        # Refresh game window
+        pygame.display.update()
 
         # Refresh rate
         fps.tick(snake_speed)

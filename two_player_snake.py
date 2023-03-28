@@ -4,7 +4,7 @@ import menus
 import time
 
 
-# This function shows the score in the top left of the screen
+# This function shows the score in the top left of the game window
 def show_score(game_window, p1_score, p2_score):
     blue = pygame.Color(112, 241, 255)
     pink = pygame.Color(250, 147, 241)
@@ -21,7 +21,7 @@ def show_score(game_window, p1_score, p2_score):
     # Create rectangle variable to define shape of text box for the score
     score_rect = p1_score_surface.get_rect()
 
-    # Use blit to draw the scoreboard onto the current screen
+    # Use blit to draw the scoreboard onto the current game window
     game_window.blit(p1_score_surface, score_rect)
     game_window.blit(p2_score_surface, (0, 20))
 
@@ -52,7 +52,7 @@ def get_game_over_message(p1_score, p2_score, winner):
     return message_info
 
 
-# This function displays the game over screen
+# This function displays the game over game window
 def game_over_message(game_window, window_x, window_y, message_info):
     blue = pygame.Color(112, 241, 255)
     pink = pygame.Color(250, 147, 241)
@@ -83,8 +83,6 @@ def game_over_message(game_window, window_x, window_y, message_info):
 
 def two_player_snake(game_window, window_x, window_y):
     black = pygame.Color(0, 0, 0)
-    red = pygame.Color(255, 0, 0)
-    green = pygame.Color(0, 255, 0)
     blue = pygame.Color(112, 241, 255)
     pink = pygame.Color(250, 147, 241)
     white = pygame.Color(255, 255, 255)
@@ -104,8 +102,6 @@ def two_player_snake(game_window, window_x, window_y):
     fruit_position = [random.randrange(1, (window_x // 10)) * 10, random.randrange(1, (window_y // 10)) * 10]
     fruit_spawn = True
     spawn = True
-    set_go = "Get set"
-    main_font = pygame.font.SysFont('times new roman', 50)
 
     # Sets the initial direction that the snake is moving to "RIGHT"
     p1_direction = 'RIGHT'  # direction is the current direction of the snake
@@ -281,25 +277,12 @@ def two_player_snake(game_window, window_x, window_y):
         # Continuously display score
         show_score(game_window, p1_score, p2_score)
 
-        # Refresh game screen
+        # Refresh game game window
         pygame.display.update()
 
         if spawn:
+            menus.spawn_countdown(game_window, window_x, window_y)
             spawn = False
-            ready_surface = main_font.render(set_go, True, red)
-            ready_rect = ready_surface.get_rect()
-            ready_rect.midtop = (window_x / 2, window_y / 4)
-            game_window.blit(ready_surface, ready_rect)
-            pygame.display.flip()
-            time.sleep(1)
-            game_window.fill(pygame.Color("black"), ready_rect)
-            set_go = "Go!"
-            ready_surface = main_font.render(set_go, True, green)
-            ready_rect = ready_surface.get_rect()
-            ready_rect.midtop = (window_x / 2, window_y / 4)
-            game_window.blit(ready_surface, ready_rect)
-            pygame.display.flip()
-            time.sleep(1)
 
         # Refresh rate
         fps.tick(snake_speed)

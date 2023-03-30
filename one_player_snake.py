@@ -44,6 +44,7 @@ def game_over(game_window, window_x, window_y, p1_score):
     pygame.display.flip()
 
 
+# Draws snake and fruit and handles movement as well as fruit eating
 def one_player_snake(game_window, window_x, window_y):
     black = pygame.Color(0, 0, 0)
     white = pygame.Color(255, 255, 255)
@@ -56,7 +57,8 @@ def one_player_snake(game_window, window_x, window_y):
     p1_body = [[100, 50], [90, 50], [80, 50], [70, 50]]
 
     # Sets a random fruit position within the window range
-    fruit_position = [random.randrange(1, (window_x // 10)) * 10, random.randrange(1, (window_y // 10)) * 10]
+    fruit_position = [random.randrange(1, (window_x // 10))
+                      * 10, random.randrange(1, (window_y // 10)) * 10]
     fruit_spawn = True
 
     # Tells the game that the players have just spawned
@@ -143,13 +145,13 @@ def one_player_snake(game_window, window_x, window_y):
                 fruit_position[0], fruit_position[1], 10, 10))
 
         # Wraps snake if it touches the walls
-        if p1_position[0] < 0:  # left
+        if p1_position[0] < 0:
             p1_position[0] = window_x - 10
-        if p1_position[0] > window_x - 10:  # right
+        if p1_position[0] > window_x - 10:
             p1_position[0] = 0
         if p1_position[1] < 0:  # top
             p1_position[1] = window_y - 10
-        if p1_position[1] > window_y - 10:  # bottom
+        if p1_position[1] > window_y - 10:
             p1_position[1] = 0
 
         # Triggers game_over if the snake touches its own body

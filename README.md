@@ -13,5 +13,5 @@ To reset high scores simply delete scores.json and restart the game.
 
 The basic framework was gotten from GeeksForGeeks and then modified heavily by Lilith Ashbury.
 Modifications include a user interface, a two player mode, different colors, and high score functionality.
-
+<br/><br/><br/>
 Have fun and enjoy! <3

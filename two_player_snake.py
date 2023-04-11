@@ -273,7 +273,7 @@ def two_player_snake(game_window, window_x, window_y):
             p2_position[1] = -10
 
         # Draw conditions
-        if p1_position[0] == (p2_position[0]
+        if (p1_position[0] == p2_position[0]
                               and p1_position[1] == p2_position[1]):
             message_info = get_game_over_message(p1_score, p2_score, 3)
             game_over_message(game_window, window_x, window_y, message_info)
